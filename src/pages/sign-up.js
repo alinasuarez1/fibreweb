@@ -1,10 +1,13 @@
 import { useState, useContext, useEffect } from "react";
 import {useNavigate} from "react-router-dom";
 import * as ROUTES from '../constants/routes';
+import FirebaseContext from '../context/firebase';
+import { doesUsernameExist } from '../services/firebase';
 
 
 export default function SignUp() {
     const history = useNavigate();
+    const { firebase } = useContext(FirebaseContext);
   
     const [username, setUsername] = useState('');
     const [fullName, setFullName] = useState('');
@@ -14,8 +17,50 @@ export default function SignUp() {
     const [error, setError] = useState('');
     const isInvalid = password === '' || emailAddress === '';
   
-    const handleSignUp = async (event) => {};
+
+    const handleSignUp = async (event) => {
+      event.preventDefault();
   
+      const usernameExists = await doesUsernameExist(username);
+      if (!usernameExists) {
+        try {
+          const createdUserResult = await firebase
+            .auth()
+            .createUserWithEmailAndPassword(emailAddress, password);
+  
+          // authentication
+          // -> emailAddress & password & username (displayName)
+          await createdUserResult.user.updateProfile({
+            displayName: username
+          });
+  
+          // firebase user collection (create a document)
+          await firebase
+            .firestore()
+            .collection('users')
+            .add({
+              userId: createdUserResult.user.uid,
+              username: username.toLowerCase(),
+              fullName,
+              emailAddress: emailAddress.toLowerCase(),
+              following: ['2'],
+              followers: [],
+              dateCreated: Date.now()
+            });
+  
+          history.push(ROUTES.DASHBOARD);
+        } catch (error) {
+          setFullName('');
+          setEmailAddress('');
+          setPassword('');
+          setError(error.message);
+        }
+      } else {
+        setUsername('');
+        setError('That username is already taken, please try another.');
+      }
+    };
+    
     useEffect(() => {
       document.title = 'Sign Up - Fibre';
     }, []);
