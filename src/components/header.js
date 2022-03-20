@@ -15,18 +15,18 @@ export default function Header(){
     return <header className="h-16 bg-white border-b border-gray-primary mb-8">
         <div className="container mx-auto max-w-screen-lg h-full flex">
             <div className="flex justify-between h-full">
-                <div className="text-gray-700 text-center flex items-center align-items cursor-pointer w-30">
+                <div className="text-gray-700 text-center flex items-center align-items cursor-pointer">
                     <h1 className="flex-auto justify-center w-full">
-                        <a href={ROUTES.DASHBOARD}>
-                            <img src="/images/logo.png" alt="Fibre" className="mt-2 w-5/12" />
-                        </a>
+                        <Link to={ROUTES.DASHBOARD}>
+                            <img src="/images/logo.png" alt="Fibre" className="max-w-xs" />
+                        </Link>
                     </h1>
                 </div>
-                <div className="text-center flex items-center align-items flex-auto w-50">
+                <div className="text-center flex items-center align-items flex-auto">
                     <p>I am the fibrecoins</p>
                 </div>
                 <div className="relative text-gray-600 items-center">
-                    <input type="search" name="serch" placeholder="Search" className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none border-2 border-gray"></input>
+                    <input type="search" name="search" placeholder="Search" className="bg-white h-10 px-5 pr-10 rounded-full text-sm focus:outline-none border-2 border-gray"></input>
                     <button type="submit" className="absolute right-0 top-0 mt-3 mr-4">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Header from '../components/header';
+import Header from '../components/header2';
 import Sidebar from '../components/sidebar';
 import Timeline from '../components/timeline';
 
